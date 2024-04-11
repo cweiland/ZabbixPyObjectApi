@@ -231,6 +231,19 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
 
     #region Hostgroup
     #region Common functions
+    def apiHostgroupCreate(self, name):
+        log.debug("apiHostgroupCreate()".format(name))
+        api = self.endpoint()
+        try:
+            hostgroup = api.hostgroup.create(name=name)
+        except Exception as error:
+            log.error("Zabbix API issue on hostgroup.create:", error)
+            return None
+        else:
+            result = hostgroup["groupids"][0]
+            log.info("Host group created")
+            return result
+
     def apiHostgroupGet(self, filter: dict, output: str, mustBeOne: bool = True):
         log.debug("apiHostgroupGet({},{})".format(filter, output))
         api = self.endpoint()
@@ -272,6 +285,15 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
             return True
 
     # endregion
+    #region Create
+    def createHostGroup(self, name):
+        log.debug("createHostGroup({})".format(name))
+        if not self.isHostGroupExists(name):
+            return self.apiHostgroupCreate(name)
+        else:
+            log.info("Host group already exists")
+            return None
+    #endregion
     #region Getters
     def getHostGroupIdFromGroupname(self, name):
         log.debug("getHostGroupIdFromGroupname({})".format(name))

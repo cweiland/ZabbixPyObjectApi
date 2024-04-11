@@ -96,6 +96,10 @@ class hostgroup:
             raise ValueError('Hostgroup unavailable')
 
     @staticmethod
+    def createFromName(name: str):
+        return hostgroup(SingletonZabbixPyObject(None).createHostGroup(name=name))
+
+    @staticmethod
     def getFromId(id: int):
         return hostgroup(SingletonZabbixPyObject(None).getHostGroupIdFromGroupid(groupid=id))
 
