@@ -293,6 +293,7 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
         else:
             log.info("Host group already exists")
             return None
+
     #endregion
     #region Getters
     def getHostGroupIdFromGroupname(self, name):
@@ -744,10 +745,10 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
         log.debug("isHostLinkedToTemplate({},{})".format(hostid, templateid))
         templateids = self.getTemplateIdsFromHostid(hostid=hostid)
         if templateids is not None and any(element == templateid for element in templateids):
-            log.info("Host {} and template {} are linked".format(hostid,templateid))
+            log.info("Host {} and template {} are linked".format(hostid, templateid))
             return True
         else:
-            log.warning("Host {} and template {} are not linked".format(hostid,templateid))
+            log.warning("Host {} and template {} are not linked".format(hostid, templateid))
             return False
 
     #endregion
@@ -815,14 +816,14 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
             return None
 
     def addJMXInterface(self, ip=None, dns=None, port=None, hostid=None, main=None):
-       log.debug("addJMXInterface")
+        log.debug("addJMXInterface")
 
-       if self.addInterface(type=4, ip=ip, dns=dns, port=port, hostid=hostid, main=main):
-           log.info("JMX Interface added")
-           return True
-       else:
-           log.error("JMX Interface not added")
-           return False
+        if self.addInterface(type=4, ip=ip, dns=dns, port=port, hostid=hostid, main=main):
+            log.info("JMX Interface added")
+            return True
+        else:
+            log.error("JMX Interface not added")
+            return False
 
     def delInterface(self, interfaceid):
         log.debug("delInterface({})".format(interfaceid))
@@ -842,6 +843,7 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
         else:
             log.info("Hostinterface not {} exists".format(interfaceid))
             return False
+
     #endregion
     #endregion
 

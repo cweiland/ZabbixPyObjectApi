@@ -17,11 +17,19 @@ class host:
 
     @staticmethod
     def getFromId(host_id: int):
-        return host(SingletonZabbixPyObject(None).getHostIdFromHostid(hostid=host_id))
+        hostId = SingletonZabbixPyObject(None).getHostIdFromHostid(hostid=host_id)
+        if hostId is None:
+            return None
+        else:
+            return host(host_id=hostId)
 
     @staticmethod
     def getFromName(name: str):
-        return host(SingletonZabbixPyObject(None).getHostIdFromHostname(hostname=name))
+        hostId = SingletonZabbixPyObject(None).getHostIdFromHostname(hostname=name)
+        if hostId is None:
+            return None
+        else:
+            return host(host_id=hostId)
 
     @property
     def hostName(self):
@@ -97,15 +105,27 @@ class hostgroup:
 
     @staticmethod
     def createFromName(name: str):
-        return hostgroup(SingletonZabbixPyObject(None).createHostGroup(name=name))
+        hgId = SingletonZabbixPyObject(None).createHostGroup(name=name)
+        if hgId is None:
+            return None
+        else:
+            return hostgroup(id=hgId)
 
     @staticmethod
     def getFromId(id: int):
-        return hostgroup(SingletonZabbixPyObject(None).getHostGroupIdFromGroupid(groupid=id))
+        hgId = SingletonZabbixPyObject(None).getHostGroupIdFromGroupid(groupid=id)
+        if hgId is None:
+            return None
+        else:
+            return hostgroup(id=hgId)
 
     @staticmethod
     def getFromName(name: str):
-        return hostgroup(SingletonZabbixPyObject(None).getHostGroupIdFromGroupname(name=name))
+        hgId = SingletonZabbixPyObject(None).getHostGroupIdFromGroupname(name=name)
+        if hgId is None:
+            return None
+        else:
+            return hostgroup(id=hgId)
 
     @property
     def name(self):
@@ -144,11 +164,19 @@ class template:
 
     @staticmethod
     def getFromId(id: int):
-        return template(SingletonZabbixPyObject(None).getTemplateidFromTemplateid(templateid=id))
+        tplId = SingletonZabbixPyObject(None).getTemplateidFromTemplateid(templateid=id)
+        if tplId is None:
+            return None
+        else:
+            return template(id=tplId)
 
     @staticmethod
     def getFromName(name: str):
-        return template(SingletonZabbixPyObject(None).getTemplateidFromName(templatename=name))
+        tplId = SingletonZabbixPyObject(None).getTemplateidFromName(templatename=name)
+        if tplId is None:
+            return None
+        else:
+            return template(id=tplId)
 
     @property
     def name(self):
