@@ -550,13 +550,13 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
 
     def getTemplateidFromTemplateid(self, templateid):
         log.debug("getTemplateidFromTemplateid({})".format(templateid))
-        filter = {"templateid": templateid}
+        filter = {"hostid": templateid}
         output = "templateid"
         return self.apiTemplatesGet(filter=filter, output=output)
 
     def getTemplateNameFromTemplateid(self, templateid):
         log.debug("getTemplateNameFromTemplateid({})".format(templateid))
-        filter = {"name": templateid}
+        filter = {"hostid": templateid}
         output = "name"
         return self.apiTemplatesGet(filter=filter, output=output)
 
