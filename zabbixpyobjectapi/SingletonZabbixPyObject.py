@@ -293,7 +293,6 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
         else:
             log.info("Host group already exists")
             return None
-
     #endregion
     #region Getters
     def getHostGroupIdFromGroupname(self, name):
@@ -550,13 +549,13 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
 
     def getTemplateidFromTemplateid(self, templateid):
         log.debug("getTemplateidFromTemplateid({})".format(templateid))
-        filter = {"templateid": templateid}
+        filter = {"hostid": templateid}
         output = "templateid"
         return self.apiTemplatesGet(filter=filter, output=output)
 
     def getTemplateNameFromTemplateid(self, templateid):
         log.debug("getTemplateNameFromTemplateid({})".format(templateid))
-        filter = {"name": templateid}
+        filter = {"hostid": templateid}
         output = "name"
         return self.apiTemplatesGet(filter=filter, output=output)
 
@@ -666,10 +665,10 @@ class SingletonZabbixPyObject(metaclass=SingletonMeta):
         log.debug("isHostLinkedToHostgroup({},{})".format(hostid, groupid))
         groupids = self.getGroupsidFromHostid(hostid)
         if groupids is not None and any(element == groupid for element in groupids):
-            log.info("Host {} and group {} are linked")
+            log.info("Host {} and group {} are linked".format(hostid, groupid))
             return True
         else:
-            log.warning("Host {} and group {} are not linked")
+            log.warning("Host {} and group {} are not linked".format(hostid, groupid))
             return False
 
     #endregion
