@@ -58,16 +58,22 @@ class host:
     @property
     def templates(self):
         templateids = SingletonZabbixPyObject(None).getTemplateIdsFromHostid(hostid=self.id)
+        if templateids is None:
+            return []
         return [template(templateid) for templateid in templateids]
 
     @property
     def groups(self):
         groupids = SingletonZabbixPyObject(None).getGroupsidFromHostid(hostid=self.id)
+        if groupids is None:
+            return []
         return [hostgroup(groupid) for groupid in groupids]
 
     @property
     def interfaces(self):
         interfaceids = SingletonZabbixPyObject(None).getHostInterfaceIdsFromHostid(hostid=self.id)
+        if interfaceids is None:
+            return []
         return [HostInterface(id=interfaceid) for interfaceid in interfaceids]
 
     @property
@@ -78,8 +84,8 @@ class host:
     def agentInterfaces(self):
         return HostInterface.agentHostInterfacesFromHosts(host=self)
 
-    def addJMXInterface(self, ip="", dns="", port="", main=0):
-        return HostInterface.addJMXInterface(hostid=self.id, ip=ip, dns=dns, port=port, main=main)
+    def addJMXInterface(self, ip="", dns="", port="", main=None):
+        return HostInterface.addJMXInterface(host=self.id, ip=ip, dns=dns, port=port, main=main)
 
     def addTemplate(self, template) -> bool:
         if SingletonZabbixPyObject(None).linkTemplateToHost(templateid=template.id, hostid=self.id):
@@ -138,6 +144,8 @@ class hostgroup:
     @property
     def hostMembers(self):
         hostids = SingletonZabbixPyObject(None).getHostsidFromGroupid(groupid=self.id)
+        if hostids is None:
+            return []
         return [host(host_id=hostid) for hostid in hostids]
 
     def addHost(self, host) -> bool:
@@ -189,6 +197,8 @@ class template:
     @property
     def hosts(self):
         hostids = SingletonZabbixPyObject(None).getHostIdsFromTemplateid(templateid=self.id)
+        if hostids is None:
+            return []
         return [host(host_id=hostid) for hostid in hostids]
 
     def addHost(self, host) -> bool:
@@ -213,22 +223,30 @@ class HostInterface:
     @staticmethod
     def jmxHostInterfacesFromHosts(host: host):
         hostinterfacesids = SingletonZabbixPyObject(None).getJMXHostInterfacesIdsFromHostid(hostid=host.id)
+        if hostinterfacesids is None:
+            return []
         return [HostInterface(id=hostinterfacesid) for hostinterfacesid in hostinterfacesids]
 
     @staticmethod
     def jmxHostInterfacesFromLotsOfThings(ip: str = None, dns: str = None, port: str = None, host=None):
         hostinterfacesids = SingletonZabbixPyObject(None).getJMXHostInterfacesIdsFromHostid(hostid=host.id, ip=ip,
                                                                                             dns=dns, port=port)
+        if hostinterfacesids is None:
+            return []
         return [HostInterface(id=hostinterfacesid) for hostinterfacesid in hostinterfacesids]
 
     @staticmethod
     def agentHostInterfacesFromHosts(host: host):
         hostinterfacesids = SingletonZabbixPyObject(None).getAgentHostInterfacesIdsFromHostid(hostid=host.id)
+        if hostinterfacesids is None:
+            return []
         return [HostInterface(id=hostinterfacesid) for hostinterfacesid in hostinterfacesids]
 
     @staticmethod
     def hostInterfaceFromId(interfaceid: int):
         hostinterfacesids = SingletonZabbixPyObject(None).getHostinterfaceIdFromInterfaceId(interfaceid=interfaceid)
+        if hostinterfacesids is None:
+            return []
         return [HostInterface(id=hostinterfacesid) for hostinterfacesid in hostinterfacesids]
 
     @staticmethod
@@ -243,6 +261,8 @@ class HostInterface:
                                                                                                useip=useip,
                                                                                                main=main, port=port,
                                                                                                hostid=host_id)
+        if hostinterfacesids is None:
+            return []
         return [HostInterface(id=hostinterfacesid) for hostinterfacesid in hostinterfacesids]
 
     @staticmethod
@@ -284,9 +304,9 @@ class HostInterface:
     def create(type: InterfaceType = None, ip: str = None, dns: str = None, port: int = None, main: bool = None,
                host=None):
         if host is None:
-            log.error("Host is None")
+            log.error("Host is not setted")
             return None
-        return SingletonZabbixPyObject(None).addInterface(type=type, ip=ip, dns=dns, main=main, port=port,
+        return SingletonZabbixPyObject(None).addInterface(type=type.value, ip=ip, dns=dns, main=main, port=port,
                                                           hostid=host.id)
 
     def remove(self):
